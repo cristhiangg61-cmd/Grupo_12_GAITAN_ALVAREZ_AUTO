@@ -2,14 +2,14 @@
 
 # Software de Automatización
 
-Este repositorio contiene el proyecto desarrollado en el marco del curso **Programación Avanzada**, enfocado en la creación de soluciones de automatización aplicadas a la ingeniería mecatrónica.
+Este repositorio contiene el proyecto desarrollado en el marco del curso **Software de Automatización**, enfocado en la creación de soluciones de automatización aplicadas a la ingeniería mecatrónica.
 
 ---
 
 ## 📌 Información del Proyecto
-- **Nombre del repositorio:** Grupo6_Cristhian_Gaitán_Luis_Alvarez  
+- **Nombre del repositorio:** Grupo_12_Cristhian_Gaitán_Luis_Alvarez  
 - **Curso:** Programación Avanzada  
-- **Grupo:** 10  
+- **Grupo:** 12  
 - **Programa académico:** Ingeniería Mecatrónica  
 
 ---
