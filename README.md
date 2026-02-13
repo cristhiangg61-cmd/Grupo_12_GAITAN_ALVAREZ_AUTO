@@ -43,4 +43,4 @@ Desarrollar un software de automatización que permita optimizar procesos, aplic
 ## ⚙️ Instrucciones de Uso
 1. Clonar el repositorio:  
    ```bash
-   git clone https://github.com/usuario/Grupo6_Cristhian_Gaitan_Luis_Alvarez.git
+   git clone https://github.com/cristhiangg61-cmd/Grupo_12_GAITAN_ALVAREZ_AUTO.git
