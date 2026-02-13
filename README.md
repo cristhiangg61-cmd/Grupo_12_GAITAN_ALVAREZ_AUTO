@@ -1,4 +1,4 @@
-# Grupo10_GAITAN_ALVAREZ_AUTO
+# Grupo12_GAITAN_ALVAREZ_AUTO
 
 # Software de Automatización
 
