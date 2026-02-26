@@ -1,0 +1,138 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "/notify",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "7c5d35c9-98a6-426f-8ca1-3f39ac557cdc",
+      "name": "Webhook",
+      "webhookId": "9416d81b-147f-41da-8b4c-671c32334326"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "e02b62de-87b0-4ec2-b711-d2defcd342e6",
+              "leftValue": "={{ $json.body.email }}",
+              "rightValue": "^[a-zA-Z0-9_%.+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        208,
+        64
+      ],
+      "id": "7c13f80d-1069-4033-8e46-a6cb27c56ed2",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "sendTo": "luisigmecatronico@gmail.com",
+        "subject": "NUEVOS DATOS RECIBIDOS",
+        "message": "=<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n    <meta charset=\"UTF-8\">\n</head>\n<body style=\"font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #ffffff; margin: 0; padding: 20px;\">\n    <div style=\"max-width: 600px; margin: 0 auto; padding: 30px; border-left: 4px solid #2196F3;\">\n        <h2 style=\"color: #333333; margin-top: 0;\">Mensaje recibido</h2>\n        <div style=\"background-color: #f5f5f5; padding: 20px; border-radius: 5px; margin: 20px 0;\">\n            <p style=\"color: #555555; font-size: 15px; line-height: 1.8; margin: 0; white-space: pre-wrap;\">{{ $('Webhook').item.json.body.mensaje }}</p>\n        </div>\n        <p style=\"color: #999999; font-size: 12px; margin-top: 30px;\">\n            <strong>Fecha:</strong> {{ $now.toFormat('dd/MM/yyyy HH:mm') }}\n        </p>\n    </div>\n</body>\n</html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        416,
+        -48
+      ],
+      "id": "1444ff93-a091-47fd-a316-c8aa0a5b2082",
+      "name": "Send a message",
+      "webhookId": "9b820b60-ec02-4c02-a0ab-bdc68027620d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Tw5RmwSi2NS07siZ",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"Fecha/Hora\": \"={{ $now.toISO() }}\",\n  \"Dato Recibido\": \"={{ JSON.stringify($json) }}\",\n  \"Tipo de Error\": \"Email inválido o formato incorrecto\",\n  \"Webhook Origen\": \"={{ $json.headers?.origin || 'Desconocido' }}\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        416,
+        160
+      ],
+      "id": "5a9ea49b-f98e-4b57-864d-7bf284c102ad",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "1e011492-c063-43a0-9342-27f63103fedd",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7e443c98285ea1a05a49e65dce8026f9902cf16a9cb55f2b95d8198a622988a5"
+  },
+  "id": "sYtI3LxJZJW4xKUG",
+  "tags": []
+}
