@@ -1,0 +1,187 @@
+{
+  "name": "Automatización_inicial_n8n",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "/notify",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -480,
+        32
+      ],
+      "id": "01e1a01b-abbd-4a74-9bb6-da276f3bd3bb",
+      "name": "Webhook",
+      "webhookId": "9416d81b-147f-41da-8b4c-671c32334326"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "e02b62de-87b0-4ec2-b711-d2defcd342e6",
+              "leftValue": "={{ $json.body.email }}",
+              "rightValue": "^[a-zA-Z0-9_%.+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
+              "operator": {
+                "type": "string",
+                "operation": "regex"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -272,
+        96
+      ],
+      "id": "f6ce1c8b-2c58-4198-b8d4-75ba7d0e4716",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "98a16c1d-bda6-4dfd-b179-b7f2e74eeedc",
+              "name": "Fecha/Hora",
+              "value": "={{ $now.format(\"DD/MM/YYYY HH:mm:ss\") }}",
+              "type": "string"
+            },
+            {
+              "id": "85cef2d1-c30b-4ca8-b380-1a0d206723d0",
+              "name": "Dato recibido",
+              "value": "={{ JSON.stringify($json) }}",
+              "type": "string"
+            },
+            {
+              "id": "3822f9dd-b383-447b-bda6-d10b091d92a8",
+              "name": "Tipo de Error",
+              "value": "Email inválido o formato incorrecto",
+              "type": "string"
+            },
+            {
+              "id": "feddfd15-0bb3-4548-9106-b141340370c6",
+              "name": "Webhook Origen",
+              "value": "notify",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        128,
+        192
+      ],
+      "id": "ea1ba1f4-580f-4bac-809e-264e0525f96b",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "sendTo": "cristhiangg61@gmail.com",
+        "subject": "Nuevos datos recibidos en n8n",
+        "message": "=<!DOCTYPE html> <html lang=\"es\"> <head>     <meta charset=\"UTF-8\"> </head> <body style=\"font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #ffffff; margin: 0; padding: 20px;\">     <div style=\"max-width: 600px; margin: 0 auto; padding: 30px; border-left: 4px solid #2196F3;\">         <h2 style=\"color: #333333; margin-top: 0;\">Mensaje recibido</h2>         <div style=\"background-color: #f5f5f5; padding: 20px; border-radius: 5px; margin: 20px 0;\">             <p style=\"color: #555555; font-size: 15px; line-height: 1.8; margin: 0; white-space: pre-wrap;\">{{ $('Webhook').item.json.body.mensaje }}</p>         </div>         <p style=\"color: #999999; font-size: 12px; margin-top: 30px;\">             <strong>Fecha:</strong> {{ $now.toFormat('dd/MM/yyyy HH:mm') }}         </p>     </div> </body> </html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -64,
+        -16
+      ],
+      "id": "7df2c7e3-8c8a-458f-a8d8-2fd822c4bebe",
+      "name": "Send a message",
+      "webhookId": "9b820b60-ec02-4c02-a0ab-bdc68027620d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "ZyFx9SO5MMoOU1o5",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "\nconst item = $input.item.json;\n\nreturn {\n  \"Fecha/Hora\": String(item[\"Fecha/Hora\"]||  new Date().toLocaleString()),\n  \"Dato Recibido\": String(item[\"Dato Recibido\"] || \"{}\"),\n  \"Tipo de Error\": String(item[\"Tipo de Error\"] || \"Email inválido o formato incorrecto\"),\n  \"Webhook Origen\": String(item[\"Webhook Origen\"] || \"notify\")\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -64,
+        192
+      ],
+      "id": "b0657928-3cf6-42f0-be74-cc3e4c7bae76",
+      "name": "Code in JavaScript"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "58da6f2a-352d-4510-af79-4e2dc3454259",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e67dff3a5e90d9d4fd0c010e76777e0d5dbc4e1705295c9442faeebaf7c782c7"
+  },
+  "id": "FlIwrDY18Wt00GEO",
+  "tags": []
+}
