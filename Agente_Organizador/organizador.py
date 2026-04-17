@@ -55,7 +55,7 @@ def clasificar_con_claude(archivos: list[str]) -> dict:
         Diccionario con la estructura {nombre_archivo: categoria}.
     """
     client = anthropic.Anthropic(
-    api_key=("tu_secretro")
+    
 
         
     )
