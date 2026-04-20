@@ -8,7 +8,7 @@ Este repositorio contiene el proyecto desarrollado en el marco del curso **Softw
 
 ## 📌 Información del Proyecto
 - **Nombre del repositorio:** Grupo_12_Cristhian_Gaitán_Luis_Alvarez  
-- **Curso:** Programación Avanzada  
+- **Curso:** Software de Automatización  
 - **Grupo:** 12  
 - **Programa académico:** Ingeniería Mecatrónica  
 
